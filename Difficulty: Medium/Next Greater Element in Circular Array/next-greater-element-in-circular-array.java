@@ -1,26 +1,29 @@
-import java.util.ArrayList;
-import java.util.Stack;
-public class Solution {
-    public ArrayList<Integer> nextLargerElement(int[] arr) {
-        int n = arr.length;
-        ArrayList<Integer> result = new ArrayList<>(n);
-        Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < n; i++) {
-            result.add(-1);
-        }
-        for (int i = 0; i < 2 * n; i++) {
-            int curr = arr[i % n];
-            
-            while (!stack.isEmpty() && arr[stack.peek()] < curr) {
-                int idx = stack.pop();
-                if (result.get(idx) == -1) {
-                    result.set(idx, curr);
+class Solution {
+    public ArrayList<Integer> nextGreater(int[] arr) {
+        int c=0;
+        ArrayList<Integer>ar=new ArrayList<>();
+        for(int i=0;i<arr.length;i++){
+            for(int j=i;j<arr.length;j++){
+                if(arr[i]<arr[j]){
+                    ar.add(arr[j]);
+                    c=1;
+                    break;
                 }
             }
-            if (i < n) {
-                stack.push(i);
+            if(c==0){
+                for(int j=0;j<i;j++){
+                    if(arr[j]>arr[i]){
+                        c=1;
+                        ar.add(arr[j]);
+                        break;
+                    }
+                }
             }
+            if(c==0)ar.add(-1);
+            c=0;
         }
-                return result;
+      
+        return ar;
     }
 }
+
