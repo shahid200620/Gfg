@@ -1,29 +1,25 @@
-import java.util.HashMap;
-
 class Solution {
     public int totalElements(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return 0;
+         int c=0,j=0;
+         
+        HashMap<Integer,Integer> mp=new HashMap<>();
+        
+        for(int i=0;i<arr.length;i++)
+        {
+              mp.put(arr[i],mp.getOrDefault(arr[i],0)+1);
+              if(mp.size()>2)
+              {
+                  mp.put(arr[j],mp.get(arr[j])-1);
+                   if(mp.get(arr[j])==0)
+                   {
+                       mp.remove(arr[j]);
+                   }
+                   j++;
+              }
+            //   c=Math.max(c,(i-j+1));
+            c=Math.max(c,i-j+1);
         }
-
-        int maxLength = 0;
-        int left = 0;
-        HashMap<Integer, Integer> distinctCount = new HashMap<>();
-
-        for (int right = 0; right < arr.length; right++) {
-            distinctCount.put(arr[right], distinctCount.getOrDefault(arr[right], 0) + 1);
-
-            while (distinctCount.size() > 2) {
-                distinctCount.put(arr[left], distinctCount.get(arr[left]) - 1);
-                if (distinctCount.get(arr[left]) == 0) {
-                    distinctCount.remove(arr[left]);
-                }
-                left++;
-            }
-
-            maxLength = Math.max(maxLength, right - left + 1);
-        }
-
-        return maxLength;
+        
+        return c;
     }
 }
