@@ -1,17 +1,21 @@
 class Solution {
     public int maxSubarrayXOR(int[] arr, int k) {
-        int wXor = arr[0];
-        for(int i = 1; i < k; i++){
-            wXor ^= arr[i];
+        int ans=Integer.MIN_VALUE;
+        int xor=0;
+        int n=arr.length;
+        for(int i=0;i<k;i++)
+        {
+            xor=xor^arr[i];
+        }
+        ans=Math.max(ans,xor);
+        for(int i=k;i<n;i++)
+        {
+            xor=xor^arr[i];
+            xor=xor^arr[i-k];
+            ans=Math.max(ans,xor);
         }
         
-        int currXor = wXor;
-        
-        for(int i = k; i < arr.length; i++){
-            currXor ^= arr[i];
-            currXor ^= arr[i - k];
-            wXor = Math.max(currXor, wXor);
-        }
-        return wXor;
+        return ans;
     }
 }
+
