@@ -1,52 +1,45 @@
 class Solution {
-    public static String smallestWindow(String s, String p) {
-        
-        if (s.length() < p.length()) return "";
 
-       
-        int[] freqP = new int[26];
-        for (char c : p.toCharArray()) {
-            freqP[c - 'a']++;
-        }
+    public static String minWindow(String s, String p) {
 
-        int[] freqS = new int[26];
-        int start = 0, minLen = Integer.MAX_VALUE, startIndex = -1;
-        int count = 0; 
+    int[]cnt=new int[128];
 
-        for (int end = 0; end < s.length(); end++) {
-            char c = s.charAt(end);
-            freqS[c - 'a']++;
+    int req=p.length(),left=-1,min=s.length()+1;
 
-            
-            if (freqP[c - 'a'] > 0 && freqS[c - 'a'] <= freqP[c - 'a']) {
-                count++;
-            }
+    for(char c:p.toCharArray()){
 
-            
-            while (count == p.length()) {
-               
-                if (end - start + 1 < minLen) {
-                    minLen = end - start + 1;
-                    startIndex = start;
-                }
+        ++cnt[c];
 
-                
-                char leftChar = s.charAt(start);
-                freqS[leftChar - 'a']--;
-                if (freqP[leftChar - 'a'] > 0 && freqS[leftChar - 'a'] < freqP[leftChar - 'a']) {
-                    count--;
-                }
-                start++;
-            }
-        }
-
-        if (startIndex == -1) return "";
-        return s.substring(startIndex, startIndex + minLen);
     }
 
-    public static void main(String[] args) {
-        System.out.println(smallestWindow("timetopractice", "toc")); 
-        System.out.println(smallestWindow("zoomlazapzo", "oza"));    
-        System.out.println(smallestWindow("zoom", "zooe"));           
+    for(int l=0,r=0;r<s.length();r++){
+
+        if(--cnt[s.charAt(r)]>=0)
+
+        --req;
+
+        while(req==0){
+
+            if(r-l+1<min){
+
+                left=l;
+
+                min=r-l+1;
+
+            }
+
+            if(++cnt[s.charAt(l++)]>0)
+
+            ++req;
+
+        }
+
     }
+
+    
+
+      return left==-1?"":s.substring(left,left+min);
+
+    }
+
 }
