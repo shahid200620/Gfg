@@ -1,15 +1,19 @@
 class Solution {
-    int ans = 0;
+    int moves = 0;
+
     public int distCandy(Node root) {
-        helper(root);
-        return ans;
+        dfs(root);
+        return moves;
     }
-    int helper (Node root){
-        if (root == null)  return 0;
-        
-        int left = helper(root.left);
-        int right = helper(root.right);
-        ans += Math.abs(left)+Math.abs(right);
-        return root.data+left+right-1;
+
+    private int dfs(Node root) {
+        if(root == null) return 0;
+
+        int left = dfs(root.left);
+        int right = dfs(root.right);
+
+        moves += Math.abs(left) + Math.abs(right);
+
+        return root.data - 1 + left + right;
     }
 }
