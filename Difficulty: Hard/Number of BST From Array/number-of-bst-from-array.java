@@ -1,38 +1,33 @@
 class Solution {
     public ArrayList<Integer> countBSTs(int[] arr) {
-       
-        int[] cloned = arr.clone();
-        ArrayList<Integer> ans = new ArrayList<>();
-        HashMap<Integer,Integer> h = new HashMap<>();
         
-        
-        Arrays.sort(arr);
         int n = arr.length;
+        long[] cat = getCatlan(n);
         
-        long[] catalan = new long[n+1];
-        catalan[0] = catalan[1] = 1;
+        int[] sorted = arr.clone();
+        Arrays.sort(sorted);
         
-        for(int i = 2;i<=n;i++){
-            catalan[i] = 0;
-            for(int j = 0; j<i;j++){
-                catalan[i] += (catalan[j] * catalan[i-j-1]);
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        for(int i=0; i<n; i++) {
+            int left = Arrays.binarySearch(sorted, arr[i]);
+            int right = n -1 -left;
+            res.add((int)(cat[left] * cat[right]));
+        }
+        return res;
+    }
+    
+    private long[] getCatlan(int n) {
+        
+        long[] cat = new long[n+1];
+        cat[0] = 1;
+        
+        if(n > 0) cat[1] = 1;
+        for(int i=2; i<=n; i++) {
+            for(int j=0; j<i; j++) {
+                
+                cat[i] += (cat[j] * cat[i -1 -j]);
             }
         }
-        
-        
-        for(int i = 0;i < n; i++){
-            int L = i; 
-            int R = n-i-1; 
-            long bstsPossible = catalan[L] * catalan[R];
-            
-            h.put(arr[i],(int) bstsPossible);
-        }
-        
-        
-        for(int num: cloned){
-            ans.add(h.get(num));
-        }
-        
-        return ans;
+        return cat;
     }
 }
